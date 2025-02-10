@@ -21,7 +21,7 @@
         <input type="text" id="nom" placeholder="Nom" required>
         <input type="text" id="prenom" placeholder="Prénom" required>
         <input type="email" id="email" placeholder="Email" required>
-        <input type="tel" id="tel" placeholder="Téléphone" required>
+        <input type="tel" id="tel" placeholder="Tél" required>
         
         <h3>Choisissez vos repas :</h3>
         <label><input type="checkbox" class="menu-item" value="Petit-déjeuner" data-price="5"> Petit-déjeuner - 5€</label><br>
@@ -71,7 +71,7 @@
             };
             
             try {
-                let response = await fetch("https://mon-n8n-instance/webhook/commande", {
+                let response = await fetch("https://nathansynergiaa.app.n8n.cloud/webhook-test/5b1c3eaa-bc38-445b-877b-1670c532d668", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
