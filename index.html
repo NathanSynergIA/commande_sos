@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande de Repas</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; }
+        form { max-width: 400px; margin: auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { background-color: #ff6600; color: white; font-weight: bold; border: none; cursor: pointer; }
+        button:hover { background-color: #e55a00; }
+        .total { font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>Commande de repas</h2>
+    
+    <form id="orderForm">
+        <input type="text" id="nom" placeholder="Nom" required>
+        <input type="text" id="prenom" placeholder="Prénom" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="tel" id="tel" placeholder="Téléphone" required>
+        
+        <h3>Choisissez vos repas :</h3>
+        <label><input type="checkbox" class="menu-item" value="Petit-déjeuner" data-price="5"> Petit-déjeuner - 5€</label><br>
+        <label><input type="checkbox" class="menu-item" value="Goûter" data-price="4"> Goûter - 4€</label><br>
+        <label><input type="checkbox" class="menu-item" value="Apéro" data-price="6"> Apéro - 6€</label><br>
+        <label><input type="checkbox" class="menu-item" value="Plat" data-price="10"> Plat - 10€</label><br>
+        <label><input type="checkbox" class="menu-item" value="Dessert" data-price="5"> Dessert - 5€</label><br>
+        
+        <p class="total">Total: <span id="totalPrice">0</span>€</p>
+        
+        <button type="submit">Envoyer ma commande</button>
+    </form>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.menu-item');
+        const totalPriceDisplay = document.getElementById('totalPrice');
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                let total = 0;
+                checkboxes.forEach(cb => {
+                    if (cb.checked) {
+                        total += parseInt(cb.dataset.price);
+                    }
+                });
+                totalPriceDisplay.textContent = total;
+            });
+        });
+        
+        document.getElementById("orderForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const selectedItems = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selectedItems.push(cb.value);
+                }
+            });
+            
+            const data = {
+                nom: document.getElementById("nom").value,
+                prenom: document.getElementById("prenom").value,
+                email: document.getElementById("email").value,
+                tel: document.getElementById("tel").value,
+                commandes: selectedItems,
+                total: totalPriceDisplay.textContent
+            };
+            
+            try {
+                let response = await fetch("https://mon-n8n-instance/webhook/commande", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert("Commande envoyée !");
+                } else {
+                    alert("Erreur lors de la commande !");
+                }
+            } catch (error) {
+                alert("Erreur de connexion !");
+            }
+        });
+    </script>
+
+</body>
+</html>
