@@ -7,10 +7,11 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; }
         form { max-width: 400px; margin: auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
-        input, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        input, button, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
         button { background-color: #ff6600; color: white; font-weight: bold; border: none; cursor: pointer; }
         button:hover { background-color: #e55a00; }
         .total { font-weight: bold; margin-top: 10px; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -18,17 +19,33 @@
     <h2>Commande de repas</h2>
     
     <form id="orderForm">
+        <label for="nom">Nom *</label>
         <input type="text" id="nom" placeholder="Nom" required>
+        
+        <label for="prenom">Prénom *</label>
         <input type="text" id="prenom" placeholder="Prénom" required>
+        
+        <label for="email">Email *</label>
         <input type="email" id="email" placeholder="Email" required>
-        <input type="tel" id="tel" placeholder="Tél" required>
+        
+        <label for="tel">Téléphone *</label>
+        <input type="tel" id="tel" placeholder="06XXXXXXXX" pattern="^(\+33|0)[1-9]([0-9]{8})$" required>
+        
+        <label for="rue">Rue et numéro *</label>
+        <input type="text" id="rue" placeholder="Numéro et nom de la rue" required>
+        
+        <label for="ville">Ville *</label>
+        <input type="text" id="ville" placeholder="Ville" required>
+        
+        <label for="codepostal">Code Postal *</label>
+        <input type="text" id="codepostal" placeholder="Code Postal" pattern="^[0-9]{5}$" required>
         
         <h3>Choisissez vos repas :</h3>
-        <label><input type="checkbox" class="menu-item" value="Petit-déjeuner" data-price="5"> Petit-déjeuner - 5€</label><br>
-        <label><input type="checkbox" class="menu-item" value="Goûter" data-price="4"> Goûter - 4€</label><br>
-        <label><input type="checkbox" class="menu-item" value="Apéro" data-price="6"> Apéro - 6€</label><br>
-        <label><input type="checkbox" class="menu-item" value="Plat" data-price="10"> Plat - 10€</label><br>
-        <label><input type="checkbox" class="menu-item" value="Dessert" data-price="5"> Dessert - 5€</label><br>
+        <label><input type="checkbox" class="menu-item" value="Petit-déjeuner" data-price="5"> Petit-déjeuner - 5€</label>
+        <label><input type="checkbox" class="menu-item" value="Goûter" data-price="4"> Goûter - 4€</label>
+        <label><input type="checkbox" class="menu-item" value="Apéro" data-price="6"> Apéro - 6€</label>
+        <label><input type="checkbox" class="menu-item" value="Plat" data-price="10"> Plat - 10€</label>
+        <label><input type="checkbox" class="menu-item" value="Dessert" data-price="5"> Dessert - 5€</label>
         
         <p class="total">Total: <span id="totalPrice">0</span>€</p>
         
@@ -66,6 +83,9 @@
                 prenom: document.getElementById("prenom").value,
                 email: document.getElementById("email").value,
                 tel: document.getElementById("tel").value,
+                rue: document.getElementById("rue").value,
+                ville: document.getElementById("ville").value,
+                codepostal: document.getElementById("codepostal").value,
                 commandes: selectedItems,
                 total: totalPriceDisplay.textContent
             };
